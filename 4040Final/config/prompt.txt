@@ -1,0 +1,16 @@
+Welcome to the Cagifier!
+
+Please select the different points to mark the line segments.
+The order of selection goes as follows:
+    - Eyes
+    - Nose
+    - Eyebrows
+    - Mouth
+    - Left cheek (of the person in the image)
+    - Right cheek
+    - Chin
+    - Hairline
+    - Left head
+    - Right head
+    - Left Shoulder
+    - Right shoulder
