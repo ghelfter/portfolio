@@ -270,6 +270,8 @@ CLEANUP:
         copy_over_obj_struct(object, &working);
     }
 
+    free_obj_file(&working);
+
     return retcode;
 }
 
