@@ -1,0 +1,6 @@
+This is my image library for Common Lisp. It includes the image_alien
+interface for integrating with my png loading C code, which can be
+compiled to a .so file and linked into sbcl using the proper functions.
+
+The image class can then be operated by a set of image operators, using
+macros, functions and methods as applicable.
