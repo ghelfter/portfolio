@@ -1,0 +1,15 @@
+This project was original done during my undergraduate, as a research project
+with the school of computing for the Calhoun Honors College. In this project,
+we researched procedural eye and eye blink animations. I programmed all of the
+following script which, given a set of blinks, applied the appropriate
+function and keyframed it in Maya.
+
+This script expects that it is to be run using Maya's python engine. This
+version was crafted for a DPA production studio course, and thus has
+removed all of the combined code written by others that detected and analyzed
+eye tracking information. It only includes the blink application code, but can
+be used (as it was for the production), to take a list of times where we might
+want to apply the blink and procedurally animate them. It currently also
+uses some quickly hacked retargets to change the expected zero to one output
+and transform it to what was needed for the controller, as the rig for the
+production was not produced with this in mind.
