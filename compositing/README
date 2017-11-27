@@ -1,0 +1,23 @@
+This program is written in Common Lisp, and uses LTK as the display engine.
+
+It does require that SBCL be used as the compiler.
+
+It can be compiled with the make command, however, I have not packaged LTK
+with it. LTK was slightly modified by me, with the following function added
+to ltk.lisp:
+
+;; Extension - put data in an image
+;; Galen M. Helfter
+(defun image-writedata (image data)
+  (format-wish "~A put \"~a\"" (name image) data))
+
+And the following added to the module declaration:
+
+image-writedata
+
+To not duplicate code, the PNG image reading code is also located higher up
+in the repository, and only the modified Makefile is placed here.
+
+Thus, to build this project, the .c and .h files from my image_load code
+must be placed in the image_load directory, and the files for ltk must
+be placed in the ltk directory. The project should then compile and run.

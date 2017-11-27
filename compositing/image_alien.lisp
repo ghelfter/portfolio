@@ -1,6 +1,7 @@
 ;;;; *********************************************************
 ;;;;                       Galen Helfter
-;;;;                  ghelfter@protonmail.com
+;;;;                         DPA 8150
+;;;;                         Project 1
 ;;;;                      image_alien.lisp
 ;;;; *********************************************************
 
@@ -84,4 +85,5 @@
 (defun write-image (filename img)
   (declare (simple-string filename))
   (declare (type image img))
+  (if (> (channels img) 3) (clear-channel img 3 1.0))
   (with-image-write istruct filename img ()))

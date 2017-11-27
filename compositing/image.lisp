@@ -1,6 +1,7 @@
 ;;;; *********************************************************
 ;;;;                       Galen Helfter
-;;;;                  ghelfter@protonmail.com
+;;;;                         DPA 8150
+;;;;                         Project 1
 ;;;;                        image.lisp
 ;;;; *********************************************************
 
@@ -16,6 +17,9 @@
 
 (defgeneric access-pixels-sdim (img i channel)
   (:documentation "Accesses a pixel at a given, single dimensional index."))
+
+(defgeneric get-value (img x y)
+  (:documentation "Given an xy index, returns the brightness of a pixel"))
 
 (defgeneric image-size (img)
   (:documentation "Given an image, calculates its total size."))
@@ -86,12 +90,23 @@
     (setf (aref (slot-value img 'data)
                (+ (* i (channels img)) channel)) value)))
 
+(defmethod get-value (img x y)
+  (+ (the single-float (* (the single-float
+                            (access-pixel img x y 0)) 0.309f0))
+     (the single-float (+ (the single-float
+                            (* (the single-float
+                               (access-pixel img x y 1)) 0.609f0))
+                           (the single-float
+                             (* (the single-float
+                                  (access-pixel img x y 2))
+                                0.082f0))))))
+
 ;; Type declarations for optimization
 (declaim (ftype (function (image) fixnum) width))
 (declaim (ftype (function (image) fixnum) height))
 (declaim (ftype (function (image) fixnum) channels))
 (declaim (ftype (function (&rest t) single-float) access-pixel))
-(declaim (ftype (function (&rest t) single-float) access-pixel-sdim))
+(declaim (ftype (function (&rest t) single-float) access-pixels-sdim))
 (declaim (ftype (function (&rest t) (simple-array single-float)) data))
 (declaim (ftype (function (image) fixnum) image-size))
 (declaim (ftype (function (image) fixnum) image-dim))
