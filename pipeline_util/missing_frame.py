@@ -56,6 +56,7 @@ def main(argv):
             try:
                 name = build_name(seq_name, i, ext)
                 fd = open(name, 'r')
+                fd.close()
             except IOError:
                 print_missing_frame(i)
                 missing.append(i)
