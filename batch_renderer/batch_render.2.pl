@@ -171,16 +171,6 @@ sub load_json_file($)
     return $res;
 }
 
-# List of computers to operate onto
-my $computers = 'minion';
-my $start = 1;
-my $end = 14;
-
-my $suffix = "fx.clemson.edu";
-
-# Maya's command path
-my $command_path = '/usr/autodesk/maya2017/bin/Render';
-
 if(scalar(@ARGV) < 6)
 {
     print_usage();
@@ -206,14 +196,6 @@ else
     my $username = Term::ReadKey::ReadLine(0);
     chomp $username;
 
-# Arguments
-#   1) Start frame
-#   2) End frame
-#   3) Render directory
-#   4) Computer name
-#   5) Command path
-#   6) Maya file path
-#   7) Render layer
     my $cmd_struct = {
         renderer  => "",
         command   => "",

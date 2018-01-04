@@ -8,6 +8,12 @@ Currently, it contains:
 4040Final - Project in which an image transformation was programmed
             using SDL as its display mechanism
 
+batch\_render - Script written in Perl to push a set of renders off to a set
+                of machines. Came from a problem we ran into at the Clemson
+                DPA program, where our pipeline would not suffice to do what
+                was needed. Has been repurposed by me to work on my own
+                machines.
+
 compositing - Project written to do many compositing operations. It uses the
               image\_load code as well as ltk, the tk bindings for Lisp. The
               project is written in Common Lisp, and uses the FFI to integrate
