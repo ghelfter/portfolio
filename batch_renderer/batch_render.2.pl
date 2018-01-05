@@ -24,7 +24,7 @@ use JSON::XS;
 
 sub print_usage ()
 {
-    print "Usage: ./batch_render.pl [start] [end] [maya_file]"
+    print "Usage: ./batch_render.pl [start] [end] [scene_file]"
           . " [render_directory] [render_layer] [config_file]\n";
 }
 
