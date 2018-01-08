@@ -39,15 +39,10 @@ if {![file exists [lindex $argv 0]]} {
     exit 1
 }
 
-# Load JSON into memory
-#set fp [open [lindex $argv 0]]
-#set json_data [read $fp]
-#close $fp
-#unset fp
-
 # Parse the JSON file
 set parsed_json [load_json [lindex $argv 0]]
-# [json::json2dict $json_data]
+
+set renderer [dict get $parsed_json renderer]
 
 # Build the domain names needed
 set hosts [dict get $parsed_json hosts]
@@ -65,21 +60,64 @@ foreach cluster $clusters {
 }
 
 # Prompt for username and password
-puts "Username:"
-gets stdin username
+stty echo
+send_user "Username: "
+expect_user -re "(.*)\n" {set username $expect_out(1,string)}
+send_user "Password: "
+stty -echo
+expect_user -re "(.*)\n" {set password $expect_out(1,string)}
+stty echo
+send_user "\n"
 
-puts "Password:"
 log_user 0
 
+set prompt "(%|#|\\$|%\]) $"
+
 # Use expect to connect to all the machines
+foreach host $hosts {
+    # Connect to the machine
+    spawn ssh "$username@$host"
 
+    expect {
+        "assword:" {
+            send -- "$password\r"
+         }
+         "you sure you want to continue connecting" {
+             send -- "yes\r"
+             expect "assword:"
+             send -- "$password\r"
+         }
+    }
 
-# Parse local JSON file into memory
-# set local_json_fname "/home/batch_renderer/batch_render.config"
-# set local_json [load_json local_json_fname]
+    # Parse local JSON file into memory
+    set local_json_fname "/home/batch_renderer/batch_render.json"
 
-# Set command name using local config file
-set cmdpath ""
-set cmd "killall ${cmdpath}"
+    expect -re "$prompt"
+    send -- "cat $local_json_fname\r"
+    expect -re "$prompt"
 
-# Close the connection
+    set local_json $expect_out(buffer)
+
+    set json_list [split $local_json "\r"]
+    set clean_list {}
+    for {set i 1} {$i < [expr ([llength $json_list]-1)]} {incr i} {
+        lappend clean_list [lindex $json_list $i]
+    }
+
+    unset local_json
+    unset json_list
+
+    set json_dict [json::json2dict [join $clean_list ""]]
+
+    set cmdpath [dict get $json_dict $renderer]
+    set cmd "killall ${cmdpath}\r"
+
+    send -- $cmd
+
+    expect -re "$prompt"
+    send -- "killall ${renderer}\r"
+    
+    # Close the connection
+    expect -re "$prompt"
+    send -- "exit\r"
+}
