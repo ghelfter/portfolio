@@ -1,11 +1,11 @@
 /**************************************************
  *                  Galen Helfter
- *              ghelfter@clemson.edu
+ *              ghelfte@g.clemson.edu
  *                   obj_parser.c
  **************************************************/
 
 /* Define POSIX C for strtok_r use */
-#define _POSIX_C_SOURCE 200809L
+#define _DEFAULT_SOURCE
 
 /* C standard library headers */
 #include <stdio.h>
@@ -92,6 +92,7 @@ int parse_obj_file(const char *filename, struct WavefrontOBJ *object)
     {
         /* Get line from the file */
         rval = getline(&line, &lsize, in_file);
+
         if(rval < 0)
         {
             continue;
@@ -155,7 +156,7 @@ int parse_obj_file(const char *filename, struct WavefrontOBJ *object)
         }
     }
 
-    /* Allocate our structure memory*/
+    /* Allocate our structure memory */
     if(working.nverts)
     {
         working.verts = malloc(sizeof(float) * 4 * working.nverts);
@@ -164,7 +165,7 @@ int parse_obj_file(const char *filename, struct WavefrontOBJ *object)
 
     if(working.nuvs)
     {
-        working.uvs = malloc(sizeof(float) * 2 * working.nuvs);
+        working.uvs = malloc(sizeof(float) * 3 * working.nuvs);
         working.nuvs = 0u;
     }
     if(working.nnorms)
@@ -265,12 +266,15 @@ CLEANUP:
     }
     line = NULL;
 
+    /* Don't free file - memory is copied over exactly */
     if(retcode == OBJ_PARSER_SUCCESS)
     {
         copy_over_obj_struct(object, &working);
     }
-
-    free_obj_file(&working);
+    else
+    {
+        free_obj_file(&working);
+    }
 
     return retcode;
 }
@@ -285,8 +289,8 @@ void obj_access_vertex(const struct WavefrontOBJ *object, float *x,
     (*w) = *(object->verts + index + 3u);
 }
 
-void obj_access_uv(const struct WavefrontOBJ *object, float *u,
-                   float *v, float *w, unsigned int ind)
+void obj_access_uvw(const struct WavefrontOBJ *object, float *u,
+                    float *v, float *w, unsigned int ind)
 {
     unsigned int index = ind * 3u;
     (*u) = *(object->uvs + index);

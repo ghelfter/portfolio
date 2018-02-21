@@ -1,6 +1,6 @@
 /**************************************************
  *                  Galen Helfter
- *              ghelfter@clemson.edu
+ *              ghelfte@g.clemson.edu
  *                   obj_parser.h
  **************************************************/
 
